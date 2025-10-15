@@ -11,9 +11,10 @@ Colditz Escape
 _Colditz Escape_ is a rewritten game engine for the classic "Escape From Colditz" Amiga game.
 In this game, you control a set of four prisoners of war trying to escape from the infamous Colditz Castle WWII prison.
 
-The original game, created by _Mike Halsall_ and _John Law_ (with intro music by [Bjørn Lynne](https://lynnemusic.com/)),
+The original game, created by [_Mike Halsall_](https://www.mobygames.com/person/100907/mike-halsall/) and
+[_John Law_](https://www.mobygames.com/person/49707/jon-law/credits/) (with intro music by [Bjørn Lynne](https://lynnemusic.com/)),
 was published in 1991 by Digital Magic Software.
-This new version, which allows you to play the game on Windows, Linux, macOS and PSP platforms, has been reverse engineered from the
+This new version, which allows you to play the game on Windows, Linux and MacOS platforms, has been reverse engineered from the
 original Amiga game engine and is released under a GPL v3 license.
 
 For more information, see [the documentation](docs/index.md).

@@ -1,3 +1,5 @@
+![Colditz Escape Logo](pics/icon-256.png)
+
 Frequently Asked Questions
 ==========================
 
@@ -10,7 +12,7 @@ First, make sure you download the archive that is relevant to your platform, the
 * (__Windows__) Extract all the files and then launch `COLDITZ.EXE`
 * (__macOS__) Extract all the files and then launch `colditz`. You may need to install XQuartz first.
 * (__Linux__) Extract all the files and then launch `colditz`
-* (__PSP__) Extract the files into `PSP/GAME/` (so that you end up with a `PSP/GAME/Colditz Escape` 
+* (__PSP__) Extract the files into `PSP/GAME/` (so that you end up with a `PSP/GAME/Colditz Escape`
   directory on your memory stick. You should now be able to launch "Colditz Escape" in your Games menu.
 
 Default Controls
@@ -37,7 +39,7 @@ Default Controls
 * <kbd>F4</kbd> : Select Polish Prisoner
 * <kbd>F5</kbd> : Pause Game / View All Prisoners
 * <kbd>F9</kbd> : Sleep
-* <kbd>F10</kbd> : Set Stooge 
+* <kbd>F10</kbd> : Set Stooge
 
 ### XBox 360 Controller controls
 
@@ -67,11 +69,7 @@ Note that the controls above can be modified by editing your `config.xml` in the
 Gameplay
 --------
 
-### How can I use tunnels?
-### How do I use the candle?
-### How do I use the saw?
-### How do I use the pick-axe?
-### How do I use the shovel?
+### How can I use tunnels? / How do I use the candle? / How do I use the saw? / How do I use the pick-axe? / How do I use the shovel?
 
 To use a tunnel, you must first use the right tool to open the tunnel exit. For tunnel exits located
 on wood floors, use the saw, for exits on pavement, use the pick-axe, and for exits on grass, use the
@@ -96,8 +94,7 @@ close by.
 This can be used to warn a prisoner visiting a restricted area that a guard is on his way. To set a
 stooge, make sure your prisoner is idle and press the "Stooge" key.
 
-### How can I open doors?
-### How do I use Keys/Lock-picks?
+### How can I open doors? / How do I use Keys/Lock-picks?
 
 Locked doors need to be opened with the relevant tool:
 * "Low Security doors" require the use of a a lock-pick
@@ -112,8 +109,7 @@ you, using a stone will make them revert to a walking pursuit, thus giving you a
 
 To use a stone, make sure it is selected in your inventory and press the action key
 
-### What is the fatigue bar used for?
-### How do I use sleep?
+### What is the fatigue bar used for? / How do I use sleep?
 
 Walking, running and especially crawling increase your fatigue. The fatigue level is also increased
 with every game hour that pass.
@@ -154,7 +150,7 @@ The stethoscope was not used in the original game.
 
 ### Are there any cheat modes?
 
-Well, who knows...
+[Well, who knows...](https://github.com/aperture-software/colditz-escape/blob/71267cd3f5adaaff8f87dce581fa5292264d2523/main.c#L187-L194)
 
 ### What does "Enhancements" do in the options menu?
 
@@ -195,7 +191,7 @@ which can happen if:
 * Your files are corrupted &rarr; download the binaries again
 * You manually changed the data files &rarr; if you want to mod the game, you should start by
   recompiling the source and remove the MD5 checks.
-  
+
 ### (PSP) Whoa, I never realized the remanence on the PSP was so bad! / The game smears a lot & doesn't look too good on older PSPs
 
 Indeed. Please address your complaints to _"Hey Sony, it sure took you a while to put a decent
@@ -250,8 +246,7 @@ files provided with the current binaries, a search for ADF (Amiga Disk File) ima
 Colditz in any search engine should direct you to original disk dumps.
 
 You can then extract the data files listed on the home page from the ADF image. You can use the
-Windows version of the `unadf` executables (preferably `staticunadf.exe`) from the `binw32.zip` 
-archive at http://lclevy.free.fr/adflib/adflib.html
+`unadf` executable from [ADFlib](https://github.com/adflib/ADFlib) to do just that.
 
 ### To extract the files:
 
@@ -259,10 +254,7 @@ archive at http://lclevy.free.fr/adflib/adflib.html
 * Extract the `.adf` file from, the compressed ADF image you downloaded to another temporary directory.
 * Create a new directory (this is required because unadf does not create a subdirectory when
   extracting the files). Or you can use the directory where you extracted "Colditz Escape"
-* Copy the `staticunadf.exe` executable as well as the `.adf` file (e.g. 
-  `Escape from Colditz (1990)(Digital Magic)(M4)[cr SKR][FIXED GALAHAD].adf`) to the directory above.
-* From a command prompt, navigate to the directory where you have theses 2 files and run the command:  
-  `staticunadf yourfile.adf` (e.g. `staticunadf Escape from Colditz (1990)(Digital Magic)(M4)[cr SKR][FIXED GALAHAD].adf`)
+* Copy the `unadf` executable as well as the `.adf` file and run the command `unadf <adf file>`
 
 ### I can't seem to have `COLDITZ-LOADER` in the files I extracted! How can I make the game work?
 
@@ -285,20 +277,20 @@ source code being available, if you really want, you could probably create a map
 
 ### Do you plan to port the game to more platforms
 
-Now that we have the common-platform trifecta (Windows+Mac+Linux) that's unlikely.  But this is Free Software, so __you__ can!<br>
+Now that we have the common-platforms trifecta (Windows+Mac+Linux) that's unlikely.  But this is Free Software, so __you__ can!<br>
 
 Other Questions
 ---------------
 
 ### Where can I download the latest version / find updated information?
 
-For the latest releases of Colditz Escape as well as up to date information, you should visit  
-  http://tiny.cc/colditz-escape
+For the latest releases of Colditz Escape as well as up to date information, you should visit
+  https://aperture-software.github.io/colditz-escape/
 
 ### Where can I download/browse the source code?
 
 Colditz Escape! is released under the GPL v3.0 license. To access or browse the source code,
-please visit  
+please visit
   https://github.com/aperture-software/colditz-escape
 
 Full source code archives are also provided on the main page.
@@ -330,7 +322,7 @@ Well, while I do like the game, I can't pretend that there aren't scores of othe
 same era that are much better, or even more fun to play.
 
 However, this game was fairly original for the time, with some innovative features (why don't palettes
-gradually change to mark the passage of time on any modern games btw?!?) and has that universal 
+gradually change to mark the passage of time on any modern games btw?!?) and has that universal
 "Prison Break" appeal which I think still makes it compelling 20+ years later.
 
 I also have fond memories of nights I spent, back in 1992, exploring the virtual castle, which at the
