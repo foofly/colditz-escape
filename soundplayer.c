@@ -424,6 +424,7 @@ bool mod_init(char *filename)
         if (m_Samples[i].nFineTune > 7)
             m_Samples[i].nFineTune -= 16;
         m_Samples[i].nVolume = (int) (unsigned char) *(data + modindex);
+        if (m_Samples[i].nVolume > 64) m_Samples[i].nVolume = 64;
         modindex++;
         m_Samples[i].nLoopStart = ReadModWord(data, modindex);
         modindex += 2;
@@ -1178,7 +1179,7 @@ static void DoTremolo(int track)
     } else {
         if (m_TrackDat[track].volume - vib < 0)
             vib = m_TrackDat[track].volume;
-        m_TrackDat[track].mixvol = m_TrackDat[track].volume + vib;
+        m_TrackDat[track].mixvol = m_TrackDat[track].volume - vib;
     }
 
     m_TrackDat[track].sinepos += m_TrackDat[track].tremspe;
