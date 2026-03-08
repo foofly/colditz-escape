@@ -1733,11 +1733,14 @@ int main (int argc, char *argv[])
 #endif
 
     // Well, we're supposed to call that blurb
+    printf("[DEBUG] glutInit\n"); fflush(stdout);
     glutInit(&argc, argv);
 
     // Need to have a working GL before we proceed. This is our own init() function
+    printf("[DEBUG] glut_init\n"); fflush(stdout);
     glut_init();
 
+    printf("[DEBUG] read_conf\n"); fflush(stdout);
 //	remove(confname);
     if (!read_conf(confname))
     {	// config file not found => try to create one
@@ -1761,6 +1764,7 @@ int main (int argc, char *argv[])
         enabled_menus[MAIN_MENU][MENU_LOAD] = 0;
     }
 #if !defined(PSP)
+    printf("[DEBUG] init_shaders\n"); fflush(stdout);
     opt_has_shaders = init_shaders();
     if (!opt_has_shaders)
         SET_CONFIG_BOOLEAN(options, gl_smoothing, 0);
@@ -1784,6 +1788,7 @@ int main (int argc, char *argv[])
 
     // Load the data. If it's the first time the game is ran, we might have
     // to uncompress LOADTUNE.MUS (PowerPack) and SKR_COLD (custom compression)
+    printf("[DEBUG] load_all_files\n"); fflush(stdout);
     load_all_files();
 #if defined(ANTI_TAMPERING_ENABLED)
     for (i=0; i<NB_FILES; i++)
@@ -1793,12 +1798,16 @@ int main (int argc, char *argv[])
             ERR_EXIT;
         }
 #endif
+    printf("[DEBUG] depack_loadtune\n"); fflush(stdout);
     depack_loadtune();
 
     // Some of the files need patching (this was done too in the original game!)
+    printf("[DEBUG] fix_files\n"); fflush(stdout);
     fix_files(false);
 
+    printf("[DEBUG] set_textures\n"); fflush(stdout);
     set_textures();
+    printf("[DEBUG] set_sfxs\n"); fflush(stdout);
     set_sfxs();
 
     // Set global variables
@@ -1808,6 +1817,7 @@ int main (int argc, char *argv[])
     game_time = 0;
 
     // We might want some sound
+    printf("[DEBUG] audio_init\n"); fflush(stdout);
     if (!audio_init())
         perr("Could not Initialize audio\n");
 
