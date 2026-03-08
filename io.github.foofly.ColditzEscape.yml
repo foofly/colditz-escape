@@ -1,0 +1,40 @@
+app-id: io.github.foofly.ColditzEscape
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: wrapper.sh
+
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --device=dri
+  - --socket=pulseaudio
+
+modules:
+  - name: glew
+    buildsystem: simple
+    build-commands:
+      - make GLEW_DEST=/app install
+    sources:
+      - type: archive
+        url: https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz
+        sha256: d4fc82893cfb00109578d0a1a2337fb8ca335b3ceccf97b97e5cc7f08e4353e1
+
+  - name: colditz-escape
+    buildsystem: simple
+    build-commands:
+      - make -f Makefile.linux release
+      - install -Dm755 colditz /app/bin/colditz
+      - cp -r "Colditz Escape/" /app/share/colditz-escape/
+      - rm /app/share/colditz-escape/colditz
+      - install -Dm755 flatpak/wrapper.sh /app/bin/wrapper.sh
+      - install -Dm644 io.github.foofly.ColditzEscape.desktop /app/share/applications/io.github.foofly.ColditzEscape.desktop
+      - install -Dm644 io.github.foofly.ColditzEscape.metainfo.xml /app/share/metainfo/io.github.foofly.ColditzEscape.metainfo.xml
+      - install -Dm644 docs/pics/icon-256.png /app/share/icons/hicolor/256x256/apps/io.github.foofly.ColditzEscape.png
+      - install -Dm644 docs/pics/icon-48.png /app/share/icons/hicolor/48x48/apps/io.github.foofly.ColditzEscape.png
+      - install -Dm644 docs/pics/icon-32.png /app/share/icons/hicolor/32x32/apps/io.github.foofly.ColditzEscape.png
+      - install -Dm644 docs/pics/icon-16.png /app/share/icons/hicolor/16x16/apps/io.github.foofly.ColditzEscape.png
+    sources:
+      - type: git
+        url: https://github.com/foofly/colditz-escape.git
+        branch: master

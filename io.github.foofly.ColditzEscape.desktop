@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Colditz Escape
+Comment=Escape from Colditz Castle WWII prison game
+Exec=wrapper.sh
+Icon=io.github.foofly.ColditzEscape
+Type=Application
+Categories=Game;
