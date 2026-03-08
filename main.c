@@ -26,6 +26,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <execinfo.h>
+#include <signal.h>
+#include <unistd.h>
 
 #if defined(WIN32)
 #include <windows.h>
@@ -1248,6 +1251,7 @@ static void glut_idle_static_pic(void)
     printf("[DEBUG] post glutForceJoystickFunc\n"); fflush(stdout);
 #endif
 
+    printf("[DEBUG] idle: game_menu=%d picture_state=%d intro=%d\n", game_menu, picture_state, intro); fflush(stdout);
     if (game_menu)
         process_menu();
 
@@ -1323,8 +1327,12 @@ static void glut_idle_static_pic(void)
             {
                 if (intro)
                 {
+                    printf("[DEBUG] mod_init LOADTUNE: %s\n", mod_name[MOD_LOADTUNE]); fflush(stdout);
                     if (mod_init(mod_name[MOD_LOADTUNE]))
+                    {
+                        printf("[DEBUG] mod_play\n"); fflush(stdout);
                         mod_play();
+                    }
                     else
                         printf("Failed to load Intro tune\n");
                 }
@@ -1661,6 +1669,22 @@ static void glut_mouse_buttons(int button, int state, int x, int y)
 }
 
 
+/* Crash diagnostics */
+#if !defined(WIN32) && !defined(PSP)
+static void sigabrt_handler(int sig)
+{
+    void *buffer[50];
+    int nptrs;
+    (void)sig;
+    const char msg[] = "SIGABRT - backtrace:\n";
+    write(STDERR_FILENO, msg, sizeof(msg)-1);
+    nptrs = backtrace(buffer, 50);
+    backtrace_symbols_fd(buffer, nptrs, STDERR_FILENO);
+    signal(SIGABRT, SIG_DFL);
+    raise(SIGABRT);
+}
+#endif
+
 /* Here we go! */
 #if (defined(WIN32) && !defined(_DEBUG))
 // If we don't use WinMain, the latest DX will create a console
@@ -1683,6 +1707,10 @@ int main (int argc, char *argv[])
     int opt_error = 0;	// getopt
     // General purpose
     uint32_t i;
+
+#if !defined(WIN32) && !defined(PSP)
+    signal(SIGABRT, sigabrt_handler);
+#endif
 
 #if defined(PSP)
     setup_callbacks();

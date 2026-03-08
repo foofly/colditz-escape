@@ -608,6 +608,8 @@ void fgPlatformJoystickOpen( SFG_Joystick* joy )
      */
     if(ioctl(joy->pJoystick.fd, JSIOCGAXES, &u) != -1)
         joy->num_axes = u;
+    if( joy->num_axes > _JS_MAX_AXES )
+        joy->num_axes = _JS_MAX_AXES;
     if(ioctl(joy->pJoystick.fd, JSIOCGBUTTONS, &u) != -1)
         joy->num_buttons = u;
     ioctl( joy->pJoystick.fd, JSIOCGNAME( sizeof( joy->name ) ), joy->name );
