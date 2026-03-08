@@ -1,9 +1,7 @@
 Colditz Escape
 ==============
 
-[![Windows Build Status](https://img.shields.io/github/actions/workflow/status/aperture-software/colditz-escape/Windows.yml?branch=master&style=flat-square&label=Windows%20Build)](https://github.com/aperture-software/colditz-escape/actions/workflows/Windows.yml)
-[![Linux Build Status](https://img.shields.io/github/actions/workflow/status/aperture-software/colditz-escape/Linux.yml?branch=master&style=flat-square&label=Linux%20Build)](https://github.com/aperture-software/colditz-escape/actions/workflows/Linux.yml)
-[![MacOS Build Status](https://img.shields.io/github/actions/workflow/status/aperture-software/colditz-escape/MacOS.yml?branch=master&style=flat-square&label=MacOS%20Build)](https://github.com/aperture-software/colditz-escape/actions/workflows/MacOS.yml)
+[![Linux Build Status](https://img.shields.io/github/actions/workflow/status/foofly/colditz-escape/Linux.yml?branch=master&style=flat-square&label=Linux%20Build)](https://github.com/foofly/colditz-escape/actions/workflows/Linux.yml)
 [![Flatpak Build](https://img.shields.io/github/actions/workflow/status/foofly/colditz-escape/flatpak.yml?branch=master&style=flat-square&label=Flatpak%20Build)](https://github.com/foofly/colditz-escape/actions/workflows/flatpak.yml)
 [![Licence](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
@@ -25,10 +23,7 @@ Latest Builds
 
 Below are self contained game archives, based on the latest version of the code. Just extract these files, and you're good to go!
 
-* [__Windows__](https://github.com/aperture-software/colditz-escape/releases/download/v1.3/Colditz_Escape_Windows.7z)
 * [__Linux__](https://github.com/aperture-software/colditz-escape/releases/download/v1.3/Colditz_Escape_Linux.7z)
-* [__MacOS__](https://github.com/aperture-software/colditz-escape/releases/download/v1.3/Colditz_Escape_MacOS.7z)
-* [__PSP__](https://github.com/aperture-software/colditz-escape/releases/download/v1.2/Colditz_Escape_PSP.7z) (Extract to `PSP\GAME\` on Memory Stick)
 * [__Flatpak (Linux only)__](https://github.com/foofly/colditz-escape/releases/latest) — install with `flatpak install --user ColditzEscape.flatpak`
 
 Features that might be of interest to you within this source
