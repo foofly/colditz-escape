@@ -1845,6 +1845,7 @@ int main (int argc, char *argv[])
     init_sprites();
     printf("[DEBUG] sprites_to_wGRAB\n"); fflush(stdout);
     sprites_to_wGRAB();	// Must be called after init sprite
+    printf("[DEBUG] post sprites_to_wGRAB\n"); fflush(stdout);
 
     if (opt_skip_intro)
     {
@@ -1861,6 +1862,7 @@ int main (int argc, char *argv[])
         game_state = GAME_STATE_INTRO | GAME_STATE_STATIC_PIC | GAME_STATE_PICTURE_LOOP;
         current_picture = INTRO_SCREEN_START;
         picture_state = PICTURE_FADE_IN_START;
+        printf("[DEBUG] load_texture\n"); fflush(stdout);
         if (!load_texture(&texture[INTRO_SCREEN_START]))
         {
             perr("Could not load INTRO screen\n");
@@ -1871,6 +1873,7 @@ int main (int argc, char *argv[])
     }
 
     // Now we can proceed with setting up our display
+    printf("[DEBUG] glutDisplayFunc\n"); fflush(stdout);
     glutDisplayFunc(glut_display);
     glutReshapeFunc(glut_reshape);
 
@@ -1880,8 +1883,10 @@ int main (int argc, char *argv[])
     glutSpecialUpFunc(glut_special_keys_up);
     glutMouseFunc(glut_mouse_buttons);
 
+    printf("[DEBUG] glutJoystickFunc\n"); fflush(stdout);
     glutJoystickFunc(glut_joystick,30);
 
+    printf("[DEBUG] glutMainLoop\n"); fflush(stdout);
     glutMainLoop();
 
     return 0;
