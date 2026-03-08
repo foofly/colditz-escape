@@ -367,7 +367,7 @@ static void* audio_backend_poll_thread(void *arg)
         perr("audio_backend_poll_thread: Invalid poll descriptors count\n");
         goto out;
     }
-    ufds = malloc(sizeof(struct pollfd) * count + 1);
+    ufds = malloc(sizeof(struct pollfd) * (count + 1));
     if (ufds == NULL) {
         perr("audio_backend_poll_thread: Could not allocate ufds!\n");
         goto out;
