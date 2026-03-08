@@ -376,6 +376,8 @@ static void glut_display(void)
     if (game_suspended)
         return;
 
+    printf("[DEBUG] glut_display enter\n"); fflush(stdout);
+
     // Always start with a clear to black
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -384,8 +386,11 @@ static void glut_display(void)
     {
         if (paused)
             display_pause_screen();
-        else
+        else {
+            printf("[DEBUG] display_picture\n"); fflush(stdout);
             display_picture();
+            printf("[DEBUG] post display_picture\n"); fflush(stdout);
+        }
     }
     else
     {	// In game => update room content and panel
@@ -398,6 +403,7 @@ static void glut_display(void)
             display_menu_screen();
     }
 
+    printf("[DEBUG] rescale_buffer\n"); fflush(stdout);
     if (opt_display_fps)
     {
         // NB: Having the (blocking) glFinish() on will shoot the CPU usage
@@ -1231,12 +1237,15 @@ static void glut_idle_static_pic(void)
 {
     float min_fade;
 
+    printf("[DEBUG] glut_idle_static_pic enter\n"); fflush(stdout);
     min_fade = (game_menu)?MIN_MENU_FADE:0.0f;
     // As usual, we'll need the current time value for a bunch of stuff
     update_timers();
 
 #if !defined(PSP)
+    printf("[DEBUG] glutForceJoystickFunc\n"); fflush(stdout);
     glutForceJoystickFunc();
+    printf("[DEBUG] post glutForceJoystickFunc\n"); fflush(stdout);
 #endif
 
     if (game_menu)
