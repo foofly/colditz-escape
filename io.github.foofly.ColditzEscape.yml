@@ -14,7 +14,7 @@ modules:
   - name: glew
     buildsystem: simple
     build-commands:
-      - make GLEW_DEST=/app install
+      - make GLEW_DEST=/app LIBDIR=/app/lib install
     sources:
       - type: archive
         url: https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz
@@ -22,10 +22,19 @@ modules:
 
   - name: glu
     buildsystem: meson
+    config-opts:
+      - --libdir=/app/lib
     sources:
       - type: archive
         url: https://gitlab.freedesktop.org/mesa/glu/-/archive/glu-9.0.3/glu-glu-9.0.3.tar.gz
         sha256: 7e919cbc1b2677b01d65fc28fd36a19d1f3e23d76663020e0f3b82b991475e8b
+
+  - name: libXmu
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://xorg.freedesktop.org/releases/individual/lib/libXmu-1.2.1.tar.xz
+        sha256: fcb27793248a39e5fcc5b9c4aec40cc0734b3ca76aac3d7d1c264e7f7e14e8b2
 
   - name: colditz-escape
     buildsystem: simple
