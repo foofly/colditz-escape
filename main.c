@@ -1820,10 +1820,12 @@ int main (int argc, char *argv[])
     printf("[DEBUG] audio_init\n"); fflush(stdout);
     if (!audio_init())
         perr("Could not Initialize audio\n");
+    printf("[DEBUG] post audio_init\n"); fflush(stdout);
 
     // We're going to convert the cells array, from 2 pixels per byte (paletted)
     // to on RGB(A) word per pixel
     rgbCells = (uint8_t*) aligned_malloc(fsize[CELLS]*2*RGBA_SIZE, 16);
+    printf("[DEBUG] post aligned_malloc\n"); fflush(stdout);
     if (rgbCells == NULL)
     {
         perr("Could not allocate RGB Cells buffers\n");
@@ -1831,13 +1833,17 @@ int main (int argc, char *argv[])
     }
 
     // Get a palette we can work with
+    printf("[DEBUG] to_16bit_palette\n"); fflush(stdout);
     to_16bit_palette(palette_index, 0xFF, PALETTES);
 
     // Convert the cells to RGBA data
+    printf("[DEBUG] cells_to_wGRAB\n"); fflush(stdout);
     cells_to_wGRAB(fbuffer[CELLS],rgbCells);
 
     // Do the same for overlay sprites
+    printf("[DEBUG] init_sprites\n"); fflush(stdout);
     init_sprites();
+    printf("[DEBUG] sprites_to_wGRAB\n"); fflush(stdout);
     sprites_to_wGRAB();	// Must be called after init sprite
 
     if (opt_skip_intro)

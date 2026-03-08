@@ -223,6 +223,7 @@ bool audio_backend_init(void)
     memset(snd_pcm_buffer, 0, sizeof(snd_pcm_buffer));
 
     /* Enable override of default output device with env variable "ALSA_NAME" */
+    printf("[DEBUG] audio_backend_init: opening ctl\n"); fflush(stdout);
     name = getenv("ALSA_NAME");
     if (name != NULL)
         alsa_name = name;
@@ -232,7 +233,9 @@ bool audio_backend_init(void)
         perr("audio_backend_init: Could not open sound control: %s\n", snd_strerror(err));
         return false;
     }
+    printf("[DEBUG] audio_backend_init: card_info_alloca\n"); fflush(stdout);
     snd_ctl_card_info_alloca(&info);
+    printf("[DEBUG] audio_backend_init: card_info\n"); fflush(stdout);
     err = snd_ctl_card_info(ctl_pcm, info);
     if (err < 0)
     {
@@ -244,9 +247,11 @@ bool audio_backend_init(void)
         snd_ctl_close(ctl_pcm);
 
     name = snd_ctl_card_info_get_name(info);
+    printf("[DEBUG] audio_backend_init: card=%s\n", name ? name : "(null)"); fflush(stdout);
     printv("Using %s's \"%s\" for audio output\n", name, alsa_name);
     snd_ctl_card_info_clear(info);
 
+    printf("[DEBUG] audio_backend_init: opening PCM voices\n"); fflush(stdout);
     for (voice=0; voice<NB_VOICES; voice++)
     {
         err = snd_pcm_open(&handle[voice], alsa_name, SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK);
