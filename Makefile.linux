@@ -5,8 +5,7 @@ DEPS            = glut/libglut.a
 CC              = gcc
 LD              = gcc
 
-CFLAGS         += -I. -O3 -Wall -Wshadow -Wundef -Wunused -g
-LDFLAGS        += -rdynamic
+CFLAGS         += -I. -O3 -Wall -Wshadow -Wundef -Wunused
 CXXFLAGS       += $(CFLAGS) -fno-exceptions -fno-rtti
 
 # Ubuntu is *VERY SENSITIVE* to the order in which these libs are specified

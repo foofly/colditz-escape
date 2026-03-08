@@ -26,9 +26,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <execinfo.h>
-#include <signal.h>
-#include <unistd.h>
 
 #if defined(WIN32)
 #include <windows.h>
@@ -379,7 +376,6 @@ static void glut_display(void)
     if (game_suspended)
         return;
 
-    printf("[DEBUG] glut_display enter\n"); fflush(stdout);
 
     // Always start with a clear to black
     glClear(GL_COLOR_BUFFER_BIT);
@@ -390,9 +386,7 @@ static void glut_display(void)
         if (paused)
             display_pause_screen();
         else {
-            printf("[DEBUG] display_picture\n"); fflush(stdout);
             display_picture();
-            printf("[DEBUG] post display_picture\n"); fflush(stdout);
         }
     }
     else
@@ -406,7 +400,6 @@ static void glut_display(void)
             display_menu_screen();
     }
 
-    printf("[DEBUG] rescale_buffer\n"); fflush(stdout);
     if (opt_display_fps)
     {
         // NB: Having the (blocking) glFinish() on will shoot the CPU usage
@@ -1240,18 +1233,14 @@ static void glut_idle_static_pic(void)
 {
     float min_fade;
 
-    printf("[DEBUG] glut_idle_static_pic enter\n"); fflush(stdout);
     min_fade = (game_menu)?MIN_MENU_FADE:0.0f;
     // As usual, we'll need the current time value for a bunch of stuff
     update_timers();
 
 #if !defined(PSP)
-    printf("[DEBUG] glutForceJoystickFunc\n"); fflush(stdout);
     glutForceJoystickFunc();
-    printf("[DEBUG] post glutForceJoystickFunc\n"); fflush(stdout);
 #endif
 
-    printf("[DEBUG] idle: game_menu=%d picture_state=%d intro=%d\n", game_menu, picture_state, intro); fflush(stdout);
     if (game_menu)
         process_menu();
 
@@ -1327,10 +1316,8 @@ static void glut_idle_static_pic(void)
             {
                 if (intro)
                 {
-                    printf("[DEBUG] mod_init LOADTUNE: %s\n", mod_name[MOD_LOADTUNE]); fflush(stdout);
                     if (mod_init(mod_name[MOD_LOADTUNE]))
                     {
-                        printf("[DEBUG] mod_play\n"); fflush(stdout);
                         mod_play();
                     }
                     else
@@ -1669,22 +1656,6 @@ static void glut_mouse_buttons(int button, int state, int x, int y)
 }
 
 
-/* Crash diagnostics */
-#if !defined(WIN32) && !defined(PSP)
-static void sigabrt_handler(int sig)
-{
-    void *buffer[50];
-    int nptrs;
-    (void)sig;
-    const char msg[] = "SIGABRT - backtrace:\n";
-    write(STDERR_FILENO, msg, sizeof(msg)-1);
-    nptrs = backtrace(buffer, 50);
-    backtrace_symbols_fd(buffer, nptrs, STDERR_FILENO);
-    signal(SIGABRT, SIG_DFL);
-    raise(SIGABRT);
-}
-#endif
-
 /* Here we go! */
 #if (defined(WIN32) && !defined(_DEBUG))
 // If we don't use WinMain, the latest DX will create a console
@@ -1707,10 +1678,6 @@ int main (int argc, char *argv[])
     int opt_error = 0;	// getopt
     // General purpose
     uint32_t i;
-
-#if !defined(WIN32) && !defined(PSP)
-    signal(SIGABRT, sigabrt_handler);
-#endif
 
 #if defined(PSP)
     setup_callbacks();
@@ -1770,14 +1737,11 @@ int main (int argc, char *argv[])
 #endif
 
     // Well, we're supposed to call that blurb
-    printf("[DEBUG] glutInit\n"); fflush(stdout);
     glutInit(&argc, argv);
 
     // Need to have a working GL before we proceed. This is our own init() function
-    printf("[DEBUG] glut_init\n"); fflush(stdout);
     glut_init();
 
-    printf("[DEBUG] read_conf\n"); fflush(stdout);
 //	remove(confname);
     if (!read_conf(confname))
     {	// config file not found => try to create one
@@ -1801,7 +1765,6 @@ int main (int argc, char *argv[])
         enabled_menus[MAIN_MENU][MENU_LOAD] = 0;
     }
 #if !defined(PSP)
-    printf("[DEBUG] init_shaders\n"); fflush(stdout);
     opt_has_shaders = init_shaders();
     if (!opt_has_shaders)
         SET_CONFIG_BOOLEAN(options, gl_smoothing, 0);
@@ -1825,7 +1788,6 @@ int main (int argc, char *argv[])
 
     // Load the data. If it's the first time the game is ran, we might have
     // to uncompress LOADTUNE.MUS (PowerPack) and SKR_COLD (custom compression)
-    printf("[DEBUG] load_all_files\n"); fflush(stdout);
     load_all_files();
 #if defined(ANTI_TAMPERING_ENABLED)
     for (i=0; i<NB_FILES; i++)
@@ -1835,16 +1797,12 @@ int main (int argc, char *argv[])
             ERR_EXIT;
         }
 #endif
-    printf("[DEBUG] depack_loadtune\n"); fflush(stdout);
     depack_loadtune();
 
     // Some of the files need patching (this was done too in the original game!)
-    printf("[DEBUG] fix_files\n"); fflush(stdout);
     fix_files(false);
 
-    printf("[DEBUG] set_textures\n"); fflush(stdout);
     set_textures();
-    printf("[DEBUG] set_sfxs\n"); fflush(stdout);
     set_sfxs();
 
     // Set global variables
@@ -1854,15 +1812,12 @@ int main (int argc, char *argv[])
     game_time = 0;
 
     // We might want some sound
-    printf("[DEBUG] audio_init\n"); fflush(stdout);
     if (!audio_init())
         perr("Could not Initialize audio\n");
-    printf("[DEBUG] post audio_init\n"); fflush(stdout);
 
     // We're going to convert the cells array, from 2 pixels per byte (paletted)
     // to on RGB(A) word per pixel
     rgbCells = (uint8_t*) aligned_malloc(fsize[CELLS]*2*RGBA_SIZE, 16);
-    printf("[DEBUG] post aligned_malloc\n"); fflush(stdout);
     if (rgbCells == NULL)
     {
         perr("Could not allocate RGB Cells buffers\n");
@@ -1870,19 +1825,14 @@ int main (int argc, char *argv[])
     }
 
     // Get a palette we can work with
-    printf("[DEBUG] to_16bit_palette\n"); fflush(stdout);
     to_16bit_palette(palette_index, 0xFF, PALETTES);
 
     // Convert the cells to RGBA data
-    printf("[DEBUG] cells_to_wGRAB\n"); fflush(stdout);
     cells_to_wGRAB(fbuffer[CELLS],rgbCells);
 
     // Do the same for overlay sprites
-    printf("[DEBUG] init_sprites\n"); fflush(stdout);
     init_sprites();
-    printf("[DEBUG] sprites_to_wGRAB\n"); fflush(stdout);
     sprites_to_wGRAB();	// Must be called after init sprite
-    printf("[DEBUG] post sprites_to_wGRAB\n"); fflush(stdout);
 
     if (opt_skip_intro)
     {
@@ -1899,7 +1849,6 @@ int main (int argc, char *argv[])
         game_state = GAME_STATE_INTRO | GAME_STATE_STATIC_PIC | GAME_STATE_PICTURE_LOOP;
         current_picture = INTRO_SCREEN_START;
         picture_state = PICTURE_FADE_IN_START;
-        printf("[DEBUG] load_texture\n"); fflush(stdout);
         if (!load_texture(&texture[INTRO_SCREEN_START]))
         {
             perr("Could not load INTRO screen\n");
@@ -1910,7 +1859,6 @@ int main (int argc, char *argv[])
     }
 
     // Now we can proceed with setting up our display
-    printf("[DEBUG] glutDisplayFunc\n"); fflush(stdout);
     glutDisplayFunc(glut_display);
     glutReshapeFunc(glut_reshape);
 
@@ -1920,10 +1868,8 @@ int main (int argc, char *argv[])
     glutSpecialUpFunc(glut_special_keys_up);
     glutMouseFunc(glut_mouse_buttons);
 
-    printf("[DEBUG] glutJoystickFunc\n"); fflush(stdout);
     glutJoystickFunc(glut_joystick,30);
 
-    printf("[DEBUG] glutMainLoop\n"); fflush(stdout);
     glutMainLoop();
 
     return 0;
