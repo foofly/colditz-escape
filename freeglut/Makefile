@@ -9,7 +9,7 @@ OBJS     += x11/fg_gamemode_x11.o x11/fg_glutfont_definitions_x11.o x11/fg_init_
 OBJS     += x11/fg_input_devices_x11.o x11/fg_joystick_x11.o x11/fg_main_x11.o x11/fg_menu_x11.o
 OBJS     += x11/fg_spaceball_x11.o x11/fg_state_x11.o x11/fg_state_x11_glx.o x11/fg_structure_x11.o
 OBJS     += x11/fg_window_x11.o x11/fg_window_x11_glx.o x11/fg_xinput_x11.o
-CFLAGS   += -DHAVE_CONFIG_H -DENHANCED_XBOX_360_CONTROLLER_SUPPORT -I. -I.. -w -O3
+CFLAGS   += -DHAVE_CONFIG_H -DENHANCED_XBOX_360_CONTROLLER_SUPPORT -I. -I.. -w -O3 -std=gnu11
 # CPPFLAGS is used by XCode on OSX
 CPPFLAGS += -I/opt/X11/include -Wno-implicit-function-declaration
 
