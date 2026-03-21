@@ -44,6 +44,10 @@
 #include "psp/printf.h"
 #endif
 
+#if defined(SDL2_GAMEPAD_SUPPORT)
+#include <SDL2/SDL.h>
+#endif
+
 #include "getopt.h"
 #include "low-level.h"
 #include "colditz.h"
@@ -138,6 +142,9 @@ int		gl_width, gl_height;
 int16_t	last_p_x = 0, last_p_y = 0;
 int16_t	dx = 0, d2y = 0;
 int16_t	jdx, jd2y;
+#if defined(SDL2_GAMEPAD_SUPPORT)
+static SDL_GameController* sdl_controller = NULL;
+#endif
 // Key modifiers for glut
 int		glut_mod;
 
@@ -942,6 +949,9 @@ static void glut_idle_game(void)
     update_timers();
 
     // Read & process user input
+#if defined(SDL2_GAMEPAD_SUPPORT)
+    sdl_poll_gamepad();
+#endif
     user_input();
 
     // No need to push it further if paused
@@ -1555,7 +1565,114 @@ static void parse_xbox360_controller(unsigned int buttonMask)
 }
 #endif
 
+#if defined(SDL2_GAMEPAD_SUPPORT)
+
+static uint8_t sdl_button_to_key(SDL_GameControllerButton btn)
+{
+    switch (btn) {
+        case SDL_CONTROLLER_BUTTON_A:             return KEY_ACTION;
+        case SDL_CONTROLLER_BUTTON_B:             return KEY_CANCEL;
+        case SDL_CONTROLLER_BUTTON_X:             return KEY_SLEEP;
+        case SDL_CONTROLLER_BUTTON_DPAD_UP:       return KEY_INVENTORY_PICKUP;
+        case SDL_CONTROLLER_BUTTON_DPAD_DOWN:     return KEY_INVENTORY_DROP;
+        case SDL_CONTROLLER_BUTTON_DPAD_LEFT:     return KEY_INVENTORY_LEFT;
+        case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:    return KEY_INVENTORY_RIGHT;
+        case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:  return KEY_PRISONER_LEFT;
+        case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: return KEY_PRISONER_RIGHT;
+        case SDL_CONTROLLER_BUTTON_BACK:          return KEY_PAUSE;
+        case SDL_CONTROLLER_BUTTON_START:         return KEY_ESCAPE;
+        default:                                  return 0xFF;
+    }
+}
+
+static void sdl_poll_gamepad(void)
+{
+    SDL_Event evt;
+    uint8_t key;
+    int16_t axis_val;
+
+    while (SDL_PollEvent(&evt)) {
+        switch (evt.type) {
+        case SDL_CONTROLLERDEVICEADDED:
+            if (sdl_controller == NULL) {
+                sdl_controller = SDL_GameControllerOpen(evt.cdevice.which);
+                if (sdl_controller)
+                    printb("SDL2: gamepad connected: %s\n",
+                           SDL_GameControllerName(sdl_controller));
+                else
+                    perr("SDL2: failed to open gamepad: %s\n", SDL_GetError());
+            }
+            break;
+
+        case SDL_CONTROLLERDEVICEREMOVED:
+            if (sdl_controller != NULL &&
+                SDL_GameControllerGetJoystick(sdl_controller) ==
+                SDL_JoystickFromInstanceID(evt.cdevice.which)) {
+                printb("SDL2: gamepad disconnected\n");
+                SDL_GameControllerClose(sdl_controller);
+                sdl_controller = NULL;
+                /* Release all virtual gamepad keys */
+                uint8_t released_keys[] = {
+                    KEY_ACTION, KEY_CANCEL, KEY_SLEEP,
+                    KEY_INVENTORY_PICKUP, KEY_INVENTORY_DROP,
+                    KEY_INVENTORY_LEFT, KEY_INVENTORY_RIGHT,
+                    KEY_PRISONER_LEFT, KEY_PRISONER_RIGHT,
+                    KEY_TOGGLE_WALK_RUN, KEY_STOOGE,
+                    KEY_PAUSE, KEY_ESCAPE
+                };
+                for (uint8_t i = 0; i < sizeof(released_keys); i++) {
+                    key_down[released_keys[i]] = false;
+                    key_readonce[released_keys[i]] = false;
+                    key_cheat_readonce[released_keys[i]] = false;
+                }
+                jdx = 0;
+                jd2y = 0;
+            }
+            break;
+
+        case SDL_CONTROLLERBUTTONDOWN:
+            key = sdl_button_to_key((SDL_GameControllerButton)evt.cbutton.button);
+            if (key != 0xFF) {
+                key_down[key] = true;
+                last_key_used = key;
+            }
+            break;
+
+        case SDL_CONTROLLERBUTTONUP:
+            key = sdl_button_to_key((SDL_GameControllerButton)evt.cbutton.button);
+            if (key != 0xFF) {
+                key_down[key] = false;
+                key_readonce[key] = false;
+                key_cheat_readonce[key] = false;
+            }
+            break;
+
+        case SDL_CONTROLLERAXISMOTION:
+            axis_val = evt.caxis.value;
+            switch (evt.caxis.axis) {
+            case SDL_CONTROLLER_AXIS_LEFTX:
+                jdx = (axis_val > SDL2_JOY_DEADZONE) ? 1 :
+                      (axis_val < -SDL2_JOY_DEADZONE) ? -1 : 0;
+                break;
+            case SDL_CONTROLLER_AXIS_LEFTY:
+                jd2y = (axis_val > SDL2_JOY_DEADZONE) ? 1 :
+                       (axis_val < -SDL2_JOY_DEADZONE) ? -1 : 0;
+                break;
+            case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:  /* RT -> toggle walk/run */
+                key_down[KEY_TOGGLE_WALK_RUN] = (axis_val > SDL2_JOY_DEADZONE);
+                break;
+            case SDL_CONTROLLER_AXIS_TRIGGERLEFT:   /* LT -> stooge */
+                key_down[KEY_STOOGE] = (axis_val > SDL2_JOY_DEADZONE);
+                break;
+            }
+            break;
+        }
+    }
+}
+#endif  /* SDL2_GAMEPAD_SUPPORT */
+
 // Input handling
+#if !defined(SDL2_GAMEPAD_SUPPORT)
 static void glut_joystick(unsigned int buttonMask, int x, int y, int z)
 {
     // compute x and y displacements
@@ -1585,6 +1702,7 @@ static void glut_joystick(unsigned int buttonMask, int x, int y, int z)
         scePowerTick(0);
 #endif
 }
+#endif
 
 // These macro handle the readout of the Ctrl, Alt, Shift modifiers
 // Only relevant for platforms with actual keyboard
@@ -1739,6 +1857,15 @@ int main (int argc, char *argv[])
     // Well, we're supposed to call that blurb
     glutInit(&argc, argv);
 
+#if defined(SDL2_GAMEPAD_SUPPORT)
+    if (SDL_Init(SDL_INIT_GAMECONTROLLER) != 0)
+        perr("SDL2: could not initialise game controller: %s\n", SDL_GetError());
+    else {
+        printb("SDL2 game controller support enabled\n");
+        atexit(SDL_Quit);
+    }
+#endif
+
     // Need to have a working GL before we proceed. This is our own init() function
     glut_init();
 
@@ -1868,7 +1995,9 @@ int main (int argc, char *argv[])
     glutSpecialUpFunc(glut_special_keys_up);
     glutMouseFunc(glut_mouse_buttons);
 
-    glutJoystickFunc(glut_joystick,30);
+#if !defined(SDL2_GAMEPAD_SUPPORT)
+    glutJoystickFunc(glut_joystick, 30);
+#endif
 
     glutMainLoop();
 

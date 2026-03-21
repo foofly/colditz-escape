@@ -29,13 +29,13 @@
 
 dictionary* config = NULL;
 #if !defined(PSP)
-uint8_t key_default[KEY_MAX] = { 
-    '5', 0x00, 0x1b, ' ',
-    SPECIAL_KEY_F5, SPECIAL_KEY_F9, SPECIAL_KEY_F10,
-    '4', '6', '8', '2',
+uint8_t key_default[KEY_MAX] = {
+    'e', 0x00, 0x1b, ' ',
+    'p', 'z', 'x',
+    'a', 'd', 'w', 's',
     SPECIAL_KEY_LEFT, SPECIAL_KEY_RIGHT, SPECIAL_KEY_UP, SPECIAL_KEY_DOWN,
-    0x00, 0x00,
-    SPECIAL_KEY_F1, SPECIAL_KEY_F2, SPECIAL_KEY_F3, SPECIAL_KEY_F4 };
+    0x09, 0x00,
+    '1', '2', '3', '4' };
 #else
 uint8_t key_default[KEY_MAX] = {
     'x', 'o', 'a', 'o',

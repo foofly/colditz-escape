@@ -177,11 +177,12 @@ static __inline uint8_t read_keyval(const char* keyname, int fallback)
 #define KEY_DIRECTION_UP			KEYVAL(key_direction_up)
 #define KEY_DIRECTION_DOWN			KEYVAL(key_direction_down)
 
-// XBox 360 Controller definitions
-#if !defined(PSP)
+// XBox 360 Controller definitions (GLUT path only)
+#if !defined(PSP) && !defined(SDL2_GAMEPAD_SUPPORT)
 #define XBOX360_CONTROLLER_SUPPORT
 #endif
 
+#if defined(XBOX360_CONTROLLER_SUPPORT)
 #define XBOX360_CONTROLLER_BUTTON_A		0x00000001
 #define XBOX360_CONTROLLER_BUTTON_B		0x00000002
 #define XBOX360_CONTROLLER_BUTTON_X		0x00000004
@@ -209,6 +210,7 @@ static __inline uint8_t read_keyval(const char* keyname, int fallback)
 #define XBOX360_CONTROLLER_DPAD_RIGHT	0x20000000
 #define XBOX360_CONTROLLER_DPAD_LEFT	0x10000000
 #endif
+#endif  /* XBOX360_CONTROLLER_SUPPORT */
 
 #define GET_CONFIG_BOOLEAN(section, option) iniparser_getboolean(config, #section ":" #option, false)
 #define GET_CONFIG_INTEGER(section, option) iniparser_getint(config, #section ":" #option, 0)
@@ -222,6 +224,8 @@ static __inline uint8_t read_keyval(const char* keyname, int fallback)
 #define opt_gl_smoothing			GET_CONFIG_INTEGER(options, gl_smoothing)
 #define opt_fullscreen				GET_CONFIG_BOOLEAN(options, fullscreen)
 #define JOY_DEADZONE				GET_CONFIG_INTEGER(options, joy_deadzone)
+// SDL2 axis range: -32767 to +32767. GLUT joystick range: -1000 to +1000.
+#define SDL2_JOY_DEADZONE			(JOY_DEADZONE * 32)
 #define opt_original_mode			GET_CONFIG_BOOLEAN(options, original_mode)
 
 /*

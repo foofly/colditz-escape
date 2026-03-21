@@ -18,6 +18,25 @@ original Amiga game engine and is released under a GPL v3 license.
 
 For more information, see [the documentation](docs/index.md).
 
+Default Controls
+----------------
+
+| Key | Action |
+|-----|--------|
+| <kbd>W</kbd> / <kbd>A</kbd> / <kbd>S</kbd> / <kbd>D</kbd> | Move prisoner |
+| <kbd>E</kbd> | Use selected item / enter-exit tunnel |
+| <kbd>↑</kbd> / <kbd>↓</kbd> | Pick up / drop item |
+| <kbd>←</kbd> / <kbd>→</kbd> | Cycle inventory |
+| <kbd>Space</kbd> | Toggle walk/run |
+| <kbd>Esc</kbd> | Game menu |
+| <kbd>1</kbd>–<kbd>4</kbd> | Select British/French/American/Polish prisoner |
+| <kbd>Tab</kbd> | Cycle prisoners left |
+| <kbd>P</kbd> | Pause / view all prisoners |
+| <kbd>Z</kbd> | Sleep |
+| <kbd>X</kbd> | Set stooge |
+
+Gamepad (Xbox 360 / SDL2-compatible): left stick = move, A = action, B = cancel, X = sleep, D-pad = inventory, LB/RB = cycle prisoners, LT = stooge, RT = walk/run, Back = pause, Start = menu. See [`docs/FAQ.md`](docs/FAQ.md) for full details.
+
 Latest Builds
 -------------
 

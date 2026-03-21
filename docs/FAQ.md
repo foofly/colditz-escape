@@ -20,11 +20,11 @@ Default Controls
 
 ### Keyboard controls
 
-* (Numpad) <kbd>8</kbd> : Move Prisoner Up
-* (Numpad) <kbd>4</kbd> : Move Prisoner Left
-* (Numpad) <kbd>6</kbd> : Move Prisoner Right
-* (Numpad) <kbd>2</kbd> : Move Prisoner Down
-* (Numpad) <kbd>5</kbd> : Use Currently Selected Item or Enter/Exit Tunnel (if open)
+* <kbd>W</kbd> : Move Prisoner Up
+* <kbd>A</kbd> : Move Prisoner Left
+* <kbd>D</kbd> : Move Prisoner Right
+* <kbd>S</kbd> : Move Prisoner Down
+* <kbd>E</kbd> : Use Currently Selected Item or Enter/Exit Tunnel (if open)
 
 * <kbd>↑</kbd> : Pickup Item
 * <kbd>↓</kbd> : Drop Item
@@ -33,17 +33,18 @@ Default Controls
 * <kbd>Space</kbd> : Toggle Walk/Run
 * <kbd>Esc</kbd> : Game Menu
 
-* <kbd>F1</kbd> : Select British Prisoner
-* <kbd>F2</kbd> : Select French Prisoner
-* <kbd>F3</kbd> : Select American Prisoner
-* <kbd>F4</kbd> : Select Polish Prisoner
-* <kbd>F5</kbd> : Pause Game / View All Prisoners
-* <kbd>F9</kbd> : Sleep
-* <kbd>F10</kbd> : Set Stooge
+* <kbd>1</kbd> : Select British Prisoner
+* <kbd>2</kbd> : Select French Prisoner
+* <kbd>3</kbd> : Select American Prisoner
+* <kbd>4</kbd> : Select Polish Prisoner
+* <kbd>Tab</kbd> : Cycle Prisoners Left
+* <kbd>P</kbd> : Pause Game / View All Prisoners
+* <kbd>Z</kbd> : Sleep
+* <kbd>X</kbd> : Set Stooge
 
-### XBox 360 Controller controls
+### Gamepad controls (XBox 360 / SDL2-compatible)
 
-__Note:__ For XBox 360 Controller support on Mac, you should first install the latest [360Controller package](https://github.com/360Controller/360Controller/releases).
+__Note (macOS, without SDL2):__ Install the [360Controller package](https://github.com/360Controller/360Controller/releases) for XBox 360 support. When compiled with `SDL2_GAMEPAD_SUPPORT=1`, any SDL2-compatible controller works natively.
 
 ![XBox 360 Controls](pics/xbox360_controls.png)
 

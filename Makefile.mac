@@ -9,6 +9,13 @@ CFLAGS         += -I. -O3 -Wall -Wshadow -Wundef -Wunused
 CXXFLAGS       += $(CFLAGS) -fno-exceptions -fno-rtti
 
 LIBS           += -lfreeglut -lX11 -lXi -lXmu -lXext -lGL -lGLU -lGLEW -framework CoreFoundation -framework IOKit -framework CoreAudio -framework AudioUnit
+
+# Optional: SDL2 gamepad support (replaces GLUT joystick callback)
+# Enable with: make SDL2_GAMEPAD_SUPPORT=1
+ifdef SDL2_GAMEPAD_SUPPORT
+CFLAGS  += -DSDL2_GAMEPAD_SUPPORT
+LIBS    += $(shell sdl2-config --libs)
+endif
 LIBDIRS        += -L./freeglut -L/opt/X11/lib
 
 LDFLAGS        += $(LIBDIRS) $(LIBS) $(shell pkgconf --libs-only-L glew)

@@ -10,6 +10,13 @@ CXXFLAGS       += $(CFLAGS) -fno-exceptions -fno-rtti
 
 # Ubuntu is *VERY SENSITIVE* to the order in which these libs are specified
 LIBS           += -lfreeglut -lX11 -lXi -lXmu -lXext -lGL -lGLU -lGLEW -lasound -lpthread -lm
+
+# Optional: SDL2 gamepad support (replaces GLUT joystick callback)
+# Enable with: make SDL2_GAMEPAD_SUPPORT=1
+ifdef SDL2_GAMEPAD_SUPPORT
+CFLAGS  += -DSDL2_GAMEPAD_SUPPORT
+LIBS    += -lSDL2
+endif
 LIBDIRS        += -L./freeglut
 
 LDFLAGS        += $(LIBDIRS) $(LIBS)
