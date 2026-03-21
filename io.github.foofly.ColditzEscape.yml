@@ -7,8 +7,7 @@ command: wrapper.sh
 finish-args:
   - --share=ipc
   - --socket=x11
-  - --device=dri
-  - --device=input
+  - --device=all
   - --socket=pulseaudio
 
 modules:
