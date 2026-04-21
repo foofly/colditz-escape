@@ -50,7 +50,7 @@ jobs:
           path: ColditzEscape.flatpak
 
       - name: Create GitHub Release
-        if: success()
+        if: github.event_name == 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

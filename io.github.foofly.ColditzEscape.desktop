@@ -5,3 +5,4 @@ Exec=wrapper.sh
 Icon=io.github.foofly.ColditzEscape
 Type=Application
 Categories=Game;
+Terminal=false
