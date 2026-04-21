@@ -15,10 +15,10 @@
       from the original Amiga game engine and is released under the GPL v3 license.
     </p>
   </description>
-  <url type="homepage">https://github.com/aperture-software/colditz-escape</url>
+  <url type="homepage">https://github.com/foofly/colditz-escape</url>
   <url type="vcs-browser">https://github.com/foofly/colditz-escape</url>
   <url type="bugtracker">https://github.com/foofly/colditz-escape/issues</url>
-  <developer_name>Aperture Software</developer_name>
+  <developer_name>Bill Kav</developer_name>
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <launchable type="desktop-id">io.github.foofly.ColditzEscape.desktop</launchable>
