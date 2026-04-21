@@ -55,4 +55,4 @@ modules:
       - type: git
         url: https://github.com/foofly/colditz-escape.git
         tag: v1.3-flatpak1
-        commit: e4d70a5bb92438ca61cb186c527852ec5f408607
+        commit: e41158ad29091b471c3bb8f1a69e1a103ff7fe5c
