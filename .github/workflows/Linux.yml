@@ -1,37 +1,43 @@
 name: Linux
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install toolchain
-      run: |
-        sudo apt-get update
-        sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev libxmu-dev libxi-dev libglew-dev libexpat1-dev libasound2-dev
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Install toolchain
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev libxmu-dev libxi-dev \
+            libglew-dev libexpat1-dev libasound2-dev p7zip-full
 
-    - name: Build
-      run: make release
+      - name: Build
+        run: make release
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: colditz-escape
-        path: "Colditz Escape/"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: colditz-escape
+          path: "Colditz Escape/"
 
-    - name: Create release archive
-      if: startsWith(github.ref, 'refs/tags/')
-      run: 7z a "Colditz_Escape_Linux.7z" "Colditz Escape"
+      - name: Create release archive
+        if: startsWith(github.ref, 'refs/tags/')
+        run: 7z a "Colditz_Escape_Linux.7z" "Colditz Escape"
 
-    - name: Create release
-      uses: softprops/action-gh-release@v2
-      if: startsWith(github.ref, 'refs/tags/')
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        files: Colditz_Escape_Linux.7z
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: Colditz_Escape_Linux.7z

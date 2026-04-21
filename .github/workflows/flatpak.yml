@@ -26,7 +26,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .flatpak-builder
-          key: flatpak-builder-${{ github.sha }}
+          key: flatpak-builder-${{ hashFiles('io.github.foofly.ColditzEscape.yml') }}
           restore-keys: flatpak-builder-
 
       - name: Install flatpak and flatpak-builder
@@ -44,7 +44,6 @@ jobs:
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
-        if: always()
         with:
           name: ColditzEscape.flatpak
           path: ColditzEscape.flatpak
@@ -54,8 +53,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="flatpak-$(date -u +%Y%m%d-%H%M)"
+          TAG="flatpak-$(date -u +%Y%m%d)"
           gh release create "$TAG" \
-            --title "Colditz Escape Flatpak ($TAG)" \
-            --notes "Install: flatpak install --user ColditzEscape.flatpak" \
+            --title "Colditz Escape Flatpak $TAG" \
+            --notes "Install: \`flatpak install --user ColditzEscape.flatpak\`" \
             ColditzEscape.flatpak
